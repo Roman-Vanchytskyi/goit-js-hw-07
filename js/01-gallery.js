@@ -30,17 +30,19 @@ function openModal(evt) {
     return;
   }
   const originImageLink = evt.target.dataset.source;
-  const instance = basicLightbox.create(`
-      <img src="${originImageLink}">
-  `);
+  const instance = basicLightbox.create(`<img src="${originImageLink}">`, {
+    onShow: () => {
+      window.addEventListener("keydown", onEscKey);
+    },
+    onClose: () => {
+      window.removeEventListener("keydown", onEscKey);
+    },
+  });
   instance.show();
-
-  window.addEventListener("keydown", onEscKey);
 
   function onEscKey(evt) {
     if (evt.code === "Escape") {
       instance.close();
-      window.removeEventListener("keydown", onEscKey);
     }
   }
 }
